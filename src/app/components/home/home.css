@@ -1,0 +1,249 @@
+.hero-section {
+    background-color: #eafaf1;
+    padding: 60px 0;
+    margin-bottom: 40px;
+}
+
+.hero-section .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.hero-content {
+    flex: 1;
+}
+
+.hero-content h1 {
+    font-size: 48px;
+    color: var(--text-color);
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.hero-content p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: background 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+}
+
+.hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    color: var(--primary-color);
+    font-size: 200px;
+    opacity: 0.8;
+}
+
+.features-section {
+    padding: 20px 0 60px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    text-align: center;
+}
+
+.feature-item {
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.feature-item i {
+    font-size: 32px;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.feature-item h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+.feature-item p {
+    font-size: 13px;
+    color: #888;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 40px;
+    color: var(--text-color);
+    position: relative;
+}
+
+.categories-section {
+    margin-bottom: 60px;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+.category-card {
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.category-card:hover {
+    border-color: var(--primary-color);
+    background-color: #f9f9f9;
+}
+
+.category-card i {
+    font-size: 30px;
+    color: #555;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.category-card:hover i {
+    color: var(--primary-color);
+}
+
+.category-card span {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.products-section {
+    margin-bottom: 80px;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+}
+
+.product-card {
+    border: 1px solid #eee;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+    transition: box-shadow 0.3s;
+}
+
+.product-card:hover {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.product-image {
+    height: 180px;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.placeholder-img {
+    font-size: 60px;
+    color: #ccc;
+}
+
+.badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: var(--accent-red);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.badge.new {
+    background-color: var(--secondary-color);
+}
+
+.product-info {
+    padding: 20px;
+}
+
+.product-info span {
+    font-size: 12px;
+    color: #888;
+    text-transform: uppercase;
+}
+
+.product-info h3 {
+    font-size: 16px;
+    margin: 5px 0 10px;
+    color: var(--text-color);
+}
+
+.stars {
+    color: #f1c40f;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+.price-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.add-btn {
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-btn:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}

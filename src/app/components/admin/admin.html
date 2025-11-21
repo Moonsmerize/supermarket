@@ -1,0 +1,174 @@
+<div class="admin-container">
+  
+  <div class="tabs">
+    <button [class.active]="pestanaActual === 'productos'" (click)="pestanaActual = 'productos'">
+      🛍️ Productos
+    </button>
+    <button [class.active]="pestanaActual === 'usuarios'" (click)="pestanaActual = 'usuarios'">
+      👥 Usuarios
+    </button>
+  </div>
+
+  @if (pestanaActual === 'productos') {
+    <div class="panel-section">
+      <div class="admin-header">
+        <h2>Inventario</h2>
+        <button class="btn-crear" (click)="abrirFormProducto()">+ Nuevo</button>
+      </div>
+      <div class="table-responsive">
+        <table>
+          <thead><tr><th>Imagen</th><th>Nombre</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr></thead>
+          <tbody>
+            @for (prod of listaProductos; track prod.idProductos) {
+              <tr>
+                <td><img [src]="prod.imagenUrl || 'assets/placeholder.png'" class="mini-img" alt="img"></td>
+                <td>{{ prod.nombre }}</td>
+                <td>${{ prod.precio }}</td>
+                <td [class.low-stock]="prod.stock < 10">{{ prod.stock }}</td>
+                <td>
+                  <button class="btn-icon edit" (click)="abrirFormProducto(prod)" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                  <button class="btn-icon delete" (click)="eliminarProducto(prod.idProductos)" title="Borrar"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+
+  @if (pestanaActual === 'usuarios') {
+    <div class="panel-section">
+      <div class="admin-header">
+        <h2>Usuarios del Sistema</h2>
+        <button class="btn-crear" (click)="abrirFormUsuario()">+ Nuevo</button>
+      </div>
+      <div class="table-responsive">
+        <table>
+          <thead><tr><th>ID</th><th>Nombre</th><th>Email</th><th>Rol</th><th>Acciones</th></tr></thead>
+          <tbody>
+            @for (user of listaUsuarios; track user.idUsuarios) {
+              <tr>
+                <td>{{ user.idUsuarios }}</td>
+                <td>{{ user.nombre }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                  <span class="role-badge" [class.admin]="user.idRoles === 2">
+                    {{ user.idRoles === 2 ? 'Admin' : 'Cliente' }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn-icon edit" (click)="abrirFormUsuario(user)"><i class="fa-solid fa-pen"></i></button>
+                  <button class="btn-icon delete" (click)="eliminarUsuario(user.idUsuarios)"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+
+</div>
+
+@if (mostrarModalProducto) {
+  <div class="modal-backdrop">
+    <div class="modal-content">
+      <h3>{{ esEdicionProducto ? 'Editar Producto' : 'Nuevo Producto' }}</h3>
+      
+      <form #formProd="ngForm" (ngSubmit)="guardarProducto(formProd)">
+        
+        <div class="form-group">
+          <label>Nombre del Producto *</label>
+          <input name="nombre" [(ngModel)]="productoForm.nombre" required minlength="3" #nombreProd="ngModel">
+          @if (nombreProd.invalid && (nombreProd.dirty || nombreProd.touched)) {
+            <div class="error-msg">El nombre debe tener al menos 3 letras.</div>
+          }
+        </div>
+
+        <div class="row">
+          <div class="form-group half">
+            <label>Precio ($) *</label>
+            <input type="number" name="precio" [(ngModel)]="productoForm.precio" required min="0.01" #precioProd="ngModel">
+            @if (precioProd.invalid && (precioProd.dirty || precioProd.touched)) {
+              <div class="error-msg">Precio inválido (mín 0.01).</div>
+            }
+          </div>
+
+          <div class="form-group half">
+            <label>Stock *</label>
+            <input type="number" name="stock" [(ngModel)]="productoForm.stock" required min="0" integer #stockProd="ngModel">
+            @if (stockProd.invalid && (stockProd.dirty || stockProd.touched)) {
+              <div class="error-msg">Stock no puede ser negativo.</div>
+            }
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea name="descripcion" [(ngModel)]="productoForm.descripcion" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>URL de Imagen</label>
+          <input name="imagenUrl" [(ngModel)]="productoForm.imagenUrl" placeholder="http://...">
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" (click)="cerrarModalProducto()">Cancelar</button>
+          <button type="submit" class="btn-save" [disabled]="formProd.invalid">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+@if (mostrarModalUsuario) {
+  <div class="modal-backdrop">
+    <div class="modal-content">
+      <h3>{{ esEdicionUsuario ? 'Editar Usuario' : 'Nuevo Usuario' }}</h3>
+      
+      <form #formUser="ngForm" (ngSubmit)="guardarUsuario(formUser)">
+        
+        <div class="form-group">
+          <label>Nombre Completo *</label>
+          <input name="nombre" [(ngModel)]="usuarioForm.nombre" required minlength="3" #nombreUser="ngModel">
+          @if (nombreUser.invalid && (nombreUser.dirty || nombreUser.touched)) {
+            <div class="error-msg">Requerido (mín 3 caracteres).</div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" name="email" [(ngModel)]="usuarioForm.email" required email #emailUser="ngModel">
+          @if (emailUser.invalid && (emailUser.dirty || emailUser.touched)) {
+            <div class="error-msg">Ingresa un correo válido.</div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Contraseña {{ esEdicionUsuario ? '(Dejar vacío para no cambiar)' : '*' }}</label>
+          <input type="password" name="password" [(ngModel)]="usuarioForm.password" 
+                 [required]="!esEdicionUsuario" minlength="6" #passUser="ngModel">
+          @if (passUser.invalid && (passUser.dirty || passUser.touched)) {
+            <div class="error-msg">Mínimo 6 caracteres.</div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Rol de Sistema</label>
+          <select name="idRoles" [(ngModel)]="usuarioForm.idRoles" required>
+            <option [ngValue]="1">Cliente (Comprador)</option>
+            <option [ngValue]="2">Administrador (Acceso Total)</option>
+            <option [ngValue]="3">Empleado (Gestión)</option>
+          </select>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" (click)="cerrarModalUsuario()">Cancelar</button>
+          <button type="submit" class="btn-save" [disabled]="formUser.invalid">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

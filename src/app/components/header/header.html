@@ -13,14 +13,40 @@
       </div>
 
       <div class="user-actions">
-        <a routerLink="/login" class="action-item">
-          <i class="fa-regular fa-user"></i>
-          <span>Cuenta</span>
-        </a>
+        
+        @if (!auth.estaLogueado()) {
+          <a routerLink="/login" class="action-item">
+            <i class="fa-regular fa-user"></i>
+            <span>Ingresar</span>
+          </a>
+        }
+
+        @if (auth.estaLogueado()) {
+          
+          @if (auth.esAdmin()) {
+            <a routerLink="/admin" class="action-item" style="color: var(--accent-red);">
+              <i class="fa-solid fa-lock"></i>
+              <span>Panel Admin</span>
+            </a>
+          }
+
+          <div class="action-item">
+            <i class="fa-solid fa-user-check" style="color: var(--primary-color);"></i>
+            <span>{{ auth.getNombreUsuario() }}</span>
+          </div>
+
+          <button (click)="auth.logout()" class="action-item" style="background:none; border:none; cursor:pointer;">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Salir</span>
+          </button>
+        }
+
         <a href="#" class="action-item cart-icon">
           <i class="fa-solid fa-cart-shopping"></i>
           <span>Mi Carrito</span>
-          <span class="cart-count">3</span> </a>
+          <span class="cart-count">0</span>
+        </a>
+
       </div>
     </div>
   </div>

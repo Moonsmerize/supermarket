@@ -28,8 +28,11 @@ export class LoginComponent {
 
     this.authService.login(this.credenciales).subscribe({
       next: (res) => {
-        console.log('Login correcto:', res);
-        alert('¡Bienvenido ' + (res.usuario || 'Usuario') + '!');
+        if (this.authService.esAdmin()) {
+           this.router.navigate(['/admin']); 
+        } else {
+           this.router.navigate(['/home']);
+        }
       },
       error: (err) => {
         console.error('Error de login:', err);

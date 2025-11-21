@@ -7,7 +7,7 @@ import { Observable, tap } from 'rxjs';
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:5254/api/Auth'; // Tu Backend
+  private apiUrl = 'http://localhost:5254/api/Auth';
   private http = inject(HttpClient);
 
   constructor() { }
@@ -25,7 +25,6 @@ export class AuthService {
               localStorage.setItem('usuario_nombre', response.usuario);
           }
 
-          // 3. ¡GUARDAMOS EL ROL! (Crucial para permisos)
           if(response.role) {
               localStorage.setItem('usuario_rol', response.role.toString());
           }
@@ -38,13 +37,11 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/registro`, datos);
   }
 
-  // --- GESTIÓN DE SESIÓN ---
-
   logout(): void {
     localStorage.removeItem('token_supermercado');
     localStorage.removeItem('usuario_nombre');
-    localStorage.removeItem('usuario_rol'); // Borramos el rol al salir
-    window.location.reload(); // Recargamos para limpiar estados
+    localStorage.removeItem('usuario_rol'); 
+    window.location.reload(); 
   }
 
   estaLogueado(): boolean {
@@ -55,16 +52,16 @@ export class AuthService {
     return localStorage.getItem('usuario_nombre') || '';
   }
 
-  // --- PERMISOS ---
+  getToken(): string | null {
+    return localStorage.getItem('token_supermercado');
+  }
 
-  // Obtiene el ID del rol (1: Cliente, 2: Admin, 3: Empleado)
   getRol(): number {
     const rol = localStorage.getItem('usuario_rol');
     return rol ? parseInt(rol) : 0;
   }
 
-  // Helper rápido para saber si es Admin
   esAdmin(): boolean {
-    return this.getRol() === 2; // Asumiendo que 2 es el ID de Administrador en tu BD
+    return this.getRol() === 2;
   }
 }

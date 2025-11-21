@@ -7,48 +7,64 @@ import { Observable, tap } from 'rxjs';
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:5254/api/Auth';
-
-  // Inyección de dependencia moderna (Angular 17+)
+  private apiUrl = 'http://localhost:5254/api/Auth'; // Tu Backend
   private http = inject(HttpClient);
 
   constructor() { }
 
-  // para c#
-  registro(datos: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/registro`, datos);
-  }
-
+  // --- LOGIN ---
   login(credenciales: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, credenciales).pipe(
       tap((response: any) => {
         if (response && response.token) {
-          this.guardarToken(response.token);
+          // 1. Guardamos Token
+          localStorage.setItem('token_supermercado', response.token);
           
-          // Opcional: Guardar datos del usuario para mostrar "Hola Juan"
+          // 2. Guardamos Usuario
           if(response.usuario) {
               localStorage.setItem('usuario_nombre', response.usuario);
+          }
+
+          // 3. ¡GUARDAMOS EL ROL! (Crucial para permisos)
+          if(response.role) {
+              localStorage.setItem('usuario_rol', response.role.toString());
           }
         }
       })
     );
   }
 
-  private guardarToken(token: string): void {
-    localStorage.setItem('token_supermercado', token);
+  registro(datos: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/registro`, datos);
   }
 
-  getToken(): string | null {
-    return localStorage.getItem('token_supermercado');
-  }
+  // --- GESTIÓN DE SESIÓN ---
 
   logout(): void {
     localStorage.removeItem('token_supermercado');
     localStorage.removeItem('usuario_nombre');
-    // Aquí podrías redirigir al login
+    localStorage.removeItem('usuario_rol'); // Borramos el rol al salir
+    window.location.reload(); // Recargamos para limpiar estados
   }
 
   estaLogueado(): boolean {
-    return !!this.getToken();
+    return !!localStorage.getItem('token_supermercado');
+  }
+
+  getNombreUsuario(): string {
+    return localStorage.getItem('usuario_nombre') || '';
+  }
+
+  // --- PERMISOS ---
+
+  // Obtiene el ID del rol (1: Cliente, 2: Admin, 3: Empleado)
+  getRol(): number {
+    const rol = localStorage.getItem('usuario_rol');
+    return rol ? parseInt(rol) : 0;
+  }
+
+  // Helper rápido para saber si es Admin
+  esAdmin(): boolean {
+    return this.getRol() === 2; // Asumiendo que 2 es el ID de Administrador en tu BD
   }
 }

@@ -1,61 +1,90 @@
+/* src/app/components/login/login.css */
+
 .login-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Pantalla completa */
-    background-color: #f0f2f5;
+    min-height: 80vh; /* Un poco menos de 100 para dejar ver header/footer si los pones */
+    background-color: var(--gray-light); /* Usando tu variable */
+    padding: 20px;
 }
 
 .login-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    background: var(--white);
+    padding: 2.5rem;
+    border-radius: 15px; /* Bordes más redondeados como tus cards del home */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05); /* Sombra suave igual al header */
     width: 100%;
     max-width: 400px;
     text-align: center;
+    border: 1px solid #eee; /* Borde sutil */
+}
+
+.login-card h2 {
+    color: var(--text-color);
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.login-card p {
+    color: #888;
+    margin-bottom: 30px;
+    font-size: 14px;
 }
 
 .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     text-align: left;
 }
 
 label {
     display: block;
     margin-bottom: 0.5rem;
-    font-weight: bold;
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 14px;
 }
 
 input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box; /* Importante para que el padding no rompa el ancho */
+    padding: 12px 15px;
+    border: 2px solid var(--gray-light); /* Borde más grueso y gris claro */
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: var(--primary-color); /* Se pone verde al escribir */
 }
 
 .btn-login {
     width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
+    padding: 12px;
+    background-color: var(--primary-color); /* ¡Ahora es verde! */
+    color: var(--white);
     border: none;
-    border-radius: 5px;
+    border-radius: 30px; /* Redondeado estilo "pill" como tu botón del Home */
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 16px;
+    font-weight: bold;
     margin-top: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .btn-login:hover {
-    background-color: #0056b3;
+    background-color: var(--secondary-color); /* Verde más oscuro al pasar el mouse */
+    transform: translateY(-2px); /* Pequeño efecto de elevación */
 }
 
 .error-alert {
-    color: #721c24;
-    background-color: #f8d7da;
+    color: var(--accent-red);
+    background-color: #fadbd8; /* Un rojo muy suave de fondo */
     padding: 10px;
-    border-radius: 5px;
-    margin-top: 10px;
+    border-radius: 8px;
+    margin-top: 15px;
     font-size: 0.9rem;
+    border: 1px solid var(--accent-red);
 }

@@ -7,21 +7,27 @@ import { AuthService } from './auth';
   providedIn: 'root'
 })
 export class UsuariosService {
-  private apiUrl = 'http://localhost:5254/api/Usuarios';
-  private apiAuth = 'http://localhost:5254/api/Auth/registro';
+  
+  private apiUrl = 'https://localhost:7093/api/Usuarios'; 
+  private apiAuth = 'https://localhost:7093/api/Auth/registro';
+
   private http = inject(HttpClient);
   private auth = inject(AuthService);
 
   private getHeaders() {
-    return { headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } };
+    return { 
+      headers: { 'Authorization': `Bearer ${this.auth.getToken()}` } 
+    };
   }
+
+  // --- MÉTODOS ---
 
   getUsuarios(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl, this.getHeaders());
   }
 
   crearUsuario(usuario: any): Observable<any> {
-    return this.http.post(this.apiAuth, usuario);
+    return this.http.post(this.apiAuth, usuario); 
   }
 
   editarUsuario(id: number, usuario: any): Observable<any> {

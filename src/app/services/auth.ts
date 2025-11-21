@@ -7,20 +7,18 @@ import { Observable, tap } from 'rxjs';
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:5254/api/Auth';
+private apiUrl = 'https://localhost:7093/api/Auth';
   private http = inject(HttpClient);
 
   constructor() { }
 
-  // --- LOGIN ---
+  // LOGIN
   login(credenciales: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, credenciales).pipe(
       tap((response: any) => {
         if (response && response.token) {
-          // 1. Guardamos Token
           localStorage.setItem('token_supermercado', response.token);
           
-          // 2. Guardamos Usuario
           if(response.usuario) {
               localStorage.setItem('usuario_nombre', response.usuario);
           }
@@ -45,11 +43,27 @@ export class AuthService {
   }
 
   estaLogueado(): boolean {
-    return !!localStorage.getItem('token_supermercado');
+    const token = this.getToken();
+    return !!token && !this.tokenExpirado();
   }
 
   getNombreUsuario(): string {
     return localStorage.getItem('usuario_nombre') || '';
+  }
+
+  
+  recuperarSesion(): void {
+    const token = this.getToken();
+    if (token) {
+      const decoded = this.decodificarToken(token);
+      if (decoded) {        
+        const nombre = decoded.unique_name || decoded.name || decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
+        const rol = decoded.role || decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+
+        if (nombre) localStorage.setItem('usuario_nombre', nombre);
+        if (rol) localStorage.setItem('usuario_rol', rol);
+      }
+    }
   }
 
   getToken(): string | null {
@@ -63,5 +77,31 @@ export class AuthService {
 
   esAdmin(): boolean {
     return this.getRol() === 2;
+  }
+
+  tokenExpirado(): boolean {
+    const token = this.getToken();
+    if (!token) return true;
+
+    const decoded = this.decodificarToken(token);
+    if (!decoded || !decoded.exp) return true;
+
+    const fechaExpiracion = decoded.exp * 1000;
+    const ahora = new Date().getTime();
+
+    return fechaExpiracion < ahora;
+  }
+
+  private decodificarToken(token: string): any {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      return JSON.parse(jsonPayload);
+    } catch (e) {
+      return null;
+    }
   }
 }

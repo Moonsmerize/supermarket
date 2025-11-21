@@ -8,7 +8,7 @@ import { AuthService } from './auth';
 })
 export class ProductosService {
 
-  private apiUrl = 'http://localhost:5254/api/Productos';
+  private apiUrl = 'https://localhost:7093/api/Productos';
   private http = inject(HttpClient);
   private auth = inject(AuthService); 
 

@@ -17,7 +17,7 @@ export class AdminComponent implements OnInit {
   private userService = inject(UsuariosService);
 
   pestanaActual: 'productos' | 'usuarios' = 'productos';
-  
+
   listaProductos: any[] = [];
   listaUsuarios: any[] = [];
 
@@ -82,7 +82,7 @@ export class AdminComponent implements OnInit {
   }
 
   eliminarProducto(id: number) {
-    if(confirm('¿Estás seguro de eliminar este producto?')) {
+    if (confirm('¿Estás seguro de eliminar este producto?')) {
       this.prodService.eliminarProducto(id).subscribe(() => this.cargarProductos());
     }
   }
@@ -91,7 +91,7 @@ export class AdminComponent implements OnInit {
     this.mostrarModalUsuario = true;
     if (usuario) {
       this.esEdicionUsuario = true;
-      this.usuarioForm = { ...usuario, password: '' }; 
+      this.usuarioForm = { ...usuario, password: '' };
     } else {
       this.esEdicionUsuario = false;
       this.usuarioForm = { nombre: '', email: '', password: '', idRoles: 1 };
@@ -103,9 +103,9 @@ export class AdminComponent implements OnInit {
 
     if (this.esEdicionUsuario) {
       if (!this.usuarioForm.password) {
-          delete this.usuarioForm.password; 
+        delete this.usuarioForm.password;
       }
-      
+
       this.userService.editarUsuario(this.usuarioForm.idUsuarios, this.usuarioForm).subscribe({
         next: () => {
           alert('Usuario actualizado');
@@ -122,10 +122,10 @@ export class AdminComponent implements OnInit {
           this.cargarUsuarios();
         },
         error: (e) => {
-  console.error(e);
-  // Intenta mostrar el mensaje que mandó C#, si no, muestra el genérico
-  alert('Error: ' + (e.error || e.message));
-}
+          console.error(e);
+
+          alert('Error: ' + (e.error || e.message));
+        }
       });
     }
   }
@@ -135,7 +135,7 @@ export class AdminComponent implements OnInit {
   }
 
   eliminarUsuario(id: number) {
-    if(confirm('¿Eliminar usuario permanentemente?')) {
+    if (confirm('¿Eliminar usuario permanentemente?')) {
       this.userService.eliminarUsuario(id).subscribe(() => this.cargarUsuarios());
     }
   }

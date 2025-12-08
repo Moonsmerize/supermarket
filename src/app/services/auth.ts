@@ -7,7 +7,7 @@ import { Observable, tap } from 'rxjs';
 })
 export class AuthService {
 
-private apiUrl = 'https://localhost:7093/api/Auth';
+private apiUrl = 'https://supermarket-bd1f.onrender.com/api/Auth';
   private http = inject(HttpClient);
 
   constructor() { }

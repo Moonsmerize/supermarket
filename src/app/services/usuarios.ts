@@ -8,8 +8,8 @@ import { AuthService } from './auth';
 })
 export class UsuariosService {
   
-  private apiUrl = 'https://localhost:7093/api/Usuarios'; 
-  private apiAuth = 'https://localhost:7093/api/Auth/registro';
+  private apiUrl = 'https://supermarket-bd1f.onrender.com/api/Usuarios'; 
+  private apiAuth = 'https://supermarket-bd1f.onrender.com/api/Auth/registro';
 
   private http = inject(HttpClient);
   private auth = inject(AuthService);

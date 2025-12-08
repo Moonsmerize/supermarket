@@ -8,7 +8,7 @@ import { AuthService } from './auth';
 })
 export class ProductosService {
 
-  private apiUrl = 'https://localhost:7093/api/Productos';
+  private apiUrl = 'https://supermarket-bd1f.onrender.com/api/Productos';
   private http = inject(HttpClient);
   private auth = inject(AuthService); 
 

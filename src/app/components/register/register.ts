@@ -9,12 +9,11 @@ import { AuthService } from '../../services/auth';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './register.html',
-  styleUrls: [] // Si quieres estilos, crea el archivo .css vacío por ahora
+  styleUrls: [] 
 })
 export class RegisterComponent {
-  // Datos que enviaremos al backend
   usuario = {
-    nombre: '', // Asegúrate que tu backend espere "nombre" o "nombre_completo"
+    nombre: '', 
     email: '',
     password: ''
   };
